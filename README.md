@@ -57,6 +57,6 @@ news = user_instance.get_news()
 # Print the news
 print(news)
 ```
-**Contributing**
+## Contributing
 
 Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please open an issue or submit a pull request.
