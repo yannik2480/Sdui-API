@@ -12,19 +12,16 @@ class sdui_api:
         self.headers = {
             'Authorization': self.settings["access_token"]
         }
-        if self.settings["user_id"] == "":
-            self.get_user_infomation()
-        if self.settings["access_token"] == "":
+        if self.settings["access_token"] is None:
             self.login()
+        if self.settings["user_id"] is None:
+            self.get_user_infomation()
 
     def get_user_infomation(self):
-        if self.settings["access_token"] == "":
-            self.login()
         self.api_url = self.base_url + "users/self"
         response = requests.request("GET", self.api_url, headers=self.headers)
-        if self.settings["user_id"] == "":
+        if self.settings["user_id"] is None:
             response_data = json.loads(response.text)
-            print(response_data)
             self.settings["user_id"] = response_data["data"]["id"]
             with open("settings.json", "w") as f:
                 f.write(json.dumps(self.settings, indent=4))
@@ -46,22 +43,19 @@ class sdui_api:
         return self.handle_error(response)
 
     def handle_error(self, response):
-        if response.status_code == 200:
-            return response.text
-        elif response.status_code == 401:
-            self.login()
-            return response.status_code
-        else:
-            return response.status_code
+        switcher = {
+            200: lambda: response.text,
+            400: lambda: (print("Wrong Email or Password"), exit(400)),
+            401: lambda: (print("Empty settings.json, this is a bug please report it"), response.status_code),
+        }
+        return switcher.get(response.status_code, lambda: response.status_code)()
 
     def login(self):
         self.api_url = self.base_url + "auth/login"
         self.payload = json.dumps({
             "identifier": self.settings["email"],
             "password": self.settings["password"],
-            "slink": self.settings["school"],
-            "showError": True,
-            "token": ""
+            "slink": self.settings["school"]
         })
         self.headers = {
             'content-type': 'application/json'
@@ -73,6 +67,7 @@ class sdui_api:
             self.settings["access_token"] = "Bearer " + response_data["data"]["access_token"]
             with open("settings.json", "w") as f:
                 f.write(json.dumps(self.settings, indent=4))
+            self.__init__()
             return "Updated access_token"
         else:
             return response.status_code
