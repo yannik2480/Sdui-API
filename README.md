@@ -14,11 +14,11 @@ pip install requests
 
 1. Import the user.py
 ```python
-from sdui_api.py import sdui_api()
+from sdui_api import sdui_api
 ```
 2. Use the API:
 ```python
-news = user_instance.get_news()
+news = sdui_api.get_news()
 print(news)
 ```
 
