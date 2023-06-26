@@ -7,7 +7,7 @@ This code provides a Python class, called sdui-api, that allows interaction with
 1. Clone the repository or download the code.
 2. Ensure that Python 3.x is installed on your system.
 3. Install the required dependencies by running the following command:
-```bash
+```python
 pip install requests
 ```
 ## Usage
@@ -43,20 +43,6 @@ user_id: You dont need to change that
 email: The email address of the user.
 password: The password for the user.
 
-## Example
-```python
-import requests
-import json
-
-# Create an instance of the User class
-user_instance = User()
-
-# Retrieve news for the user
-news = user_instance.get_news()
-
-# Print the news
-print(news)
-```
 ## Contributing
 
 Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please open an issue or submit a pull request.
