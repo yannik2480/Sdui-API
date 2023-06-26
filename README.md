@@ -1,4 +1,4 @@
-# SDUI API User Class
+# SDUI API
 
 This code provides a Python class, called sdui-api, that allows interaction with the SDUI API to retrieve user-related information, family information, timetables, and news. The class handles authentication, makes API requests, and handles errors appropriately.
 
